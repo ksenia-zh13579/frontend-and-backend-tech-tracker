@@ -1,5 +1,6 @@
 import './App.css';
-import TechnologyCard from './components/TechnologyCard';
+import TechnologyCard from './components/TechnologyCard.jsx';
+import ProgressHeader from './components/ProgressHeader.jsx';
 
 function App()
 {
@@ -12,6 +13,7 @@ function App()
 
   return (
     <div className='App'>
+      <ProgressHeader countAll={techs.length} countDone={techs.filter((tech) => tech.status === 'completed').length} />
       <div className='tech-list'>
         <h2>Изучаемые технологии:</h2>
         <ul>
