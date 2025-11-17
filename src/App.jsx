@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import TechnologyCard from './components/TechnologyCard.jsx';
 import ProgressHeader from './components/ProgressHeader.jsx';
+import QuickActions from './components/QuickActions.jsx';
 
 function App()
 {
@@ -51,7 +52,7 @@ function App()
         countCompleted={techs.filter((tech) => tech.statusID === 2).length} 
       />
       <div className='tech-list'>
-        <h2>Изучаемые технологии:</h2>
+        <h2>Изучаемые технологии</h2>
         <ul>
           {techs.map(tech => (
             <li key={tech.id}>
@@ -65,6 +66,11 @@ function App()
             </li>))}
         </ul>
       </div>
+      <QuickActions 
+        techs={techs}
+        setTechs={setTechs}
+        setStatus={setStatus}
+      />
     </div>
   );
 }
