@@ -1,0 +1,43 @@
+.tech-filter {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 15px;
+    margin: 10px 0;
+}
+
+.tech-filter input {
+    appearance: none;
+    display: none;
+}
+
+.tech-filter label {
+    height: 2em;
+    margin: 10px;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.btnAll {
+    background-color: rgba(187, 7, 43, 0.215);
+    border: 2px solid darkred;
+}
+
+.btnNonStarted {
+    background-color: rgba(84, 88, 216, 0.356);
+    border: 2px solid rgb(47, 18, 210);
+}
+
+.btnInProgress {
+    background-color: rgba(200, 206, 19, 0.356);
+    border: 2px solid rgb(231, 128, 18);
+}
+
+.btnCompleted {
+    background-color: rgba(36, 211, 51, 0.356);
+    border: 2px solid rgb(11, 143, 38);
+}
+
+.tech-filter input:checked + label {
+    border: 2px solid black;
+}

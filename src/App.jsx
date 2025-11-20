@@ -3,9 +3,12 @@ import './App.css';
 import TechnologyCard from './components/TechnologyCard.jsx';
 import ProgressHeader from './components/ProgressHeader.jsx';
 import QuickActions from './components/QuickActions.jsx';
+import TechFilter from './components/TechFilter.jsx';
 
 function App()
 {
+  const [filter, setFilter] = useState([0, 2]);
+
   const [techs, setTechs] = useState([
     {
       id : 1, 
@@ -53,8 +56,9 @@ function App()
       />
       <div className='tech-list'>
         <h2>Изучаемые технологии</h2>
+        <TechFilter setFilter={setFilter} />
         <ul>
-          {techs.map(tech => (
+          {techs.filter((tech) => tech.statusID >= filter[0] && tech.statusID <= filter[1]).map(tech => (
             <li key={tech.id}>
               <TechnologyCard 
                 id={tech.id}
