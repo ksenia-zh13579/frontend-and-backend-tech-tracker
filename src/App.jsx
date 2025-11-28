@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import TechnologyCard from './components/TechnologyCard.jsx';
 import ProgressHeader from './components/ProgressHeader.jsx';
@@ -14,25 +14,29 @@ function App()
       id : 1, 
       title : 'HTML', 
       description : 'Изучить основы HTML', 
-      statusID : 2
+      statusID : 2,
+      notes : ''
     },
     {
       id : 2, 
       title : 'JSX Syntax', 
       description : 'Освоение синтаксиса JSX', 
-      statusID : 1
+      statusID : 1,
+      notes : ''
     },
     {
       id : 3, 
       title : 'State Management', 
       description : 'Работа с состоянием компонентов', 
-      statusID : 0
+      statusID : 0,
+      notes : ''
     },
     {
       id : 4, 
       title : 'Effect Manaement', 
       description : 'Работа с менеджером эффектов и контролируемыми полями', 
-      statusID : 0
+      statusID : 0,
+      notes : ''
     }
   ]);
 
@@ -44,6 +48,27 @@ function App()
       newArr.splice(techIndex, 1, {...(prevArr[techIndex]), statusID : statusID});
       return newArr;
     });
+  }
+
+  useEffect(() => {
+    localStorage.setItem('techTrackerData', JSON.stringify(techs));
+    console.log('Данные сохранены в localStorage');
+  }, [techs]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('techTrackerData');
+    if (saved) {
+      setTechs(JSON.parse(saved));
+      console.log('Данные загружены из localStorage');
+    }
+  }, []);
+
+  const updateTechnologyNotes = (techId, newNotes) => {
+    setTechs(prevTech =>
+      prevTech.map(tech =>
+        tech.id === techId ? { ...tech, notes: newNotes } : tech
+      )
+    );
   }
 
   return (
@@ -66,6 +91,8 @@ function App()
                 description={tech.description} 
                 statusID={tech.statusID}
                 setStatus={setStatus}
+                notes={tech.notes}
+                onNotesChange={updateTechnologyNotes}
               />
             </li>))}
         </ul>

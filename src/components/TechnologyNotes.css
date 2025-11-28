@@ -1,0 +1,15 @@
+.notes-section {
+    padding: 15px;
+    margin: 10px 0;
+    flex: 2;
+}
+
+.notes-hint {
+    margin: 7px;
+    font-size: smaller;
+    font-weight: lighter;
+}
+
+.notes-section textarea {
+    width: 100%;
+}

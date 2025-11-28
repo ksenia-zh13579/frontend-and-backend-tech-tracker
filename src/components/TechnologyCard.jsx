@@ -1,6 +1,7 @@
 import './TechnologyCard.css';
+import TechnologyNotes from './TechnologyNotes';
 
-function TechnologyCard({id, title, description, statusID, setStatus})
+function TechnologyCard({id, title, description, statusID, setStatus, notes, onNotesChange})
 {
     const statuses = [
         {
@@ -21,11 +22,12 @@ function TechnologyCard({id, title, description, statusID, setStatus})
             onClick={() => {setStatus(id, (statusID + 1) % 3)}} 
             className={"technology-card " + statuses[statusID].status}
         >
-            <h3>
+            <h3 style={{flex: 1}}>
                 {title}
                 <span>{statuses[statusID].icon}</span>
             </h3>
-            <p>{description}</p>
+            <p style={{flex: 1}}>{description}</p>
+            <TechnologyNotes notes={notes} onNotesChange={onNotesChange} techId={id} />
         </div>
     );
 }
