@@ -7,9 +7,7 @@ import TechFilter from './components/TechFilter.jsx';
 
 function App()
 {
-  const [filter, setFilter] = useState([0, 2]);
-
-  const [techs, setTechs] = useState([
+  const initialTechs = [
     {
       id : 1, 
       title : 'HTML', 
@@ -33,12 +31,22 @@ function App()
     },
     {
       id : 4, 
-      title : 'Effect Manaement', 
+      title : 'Effect Management', 
       description : 'Работа с менеджером эффектов и контролируемыми полями', 
       statusID : 0,
       notes : ''
     }
-  ]);
+  ];
+
+  const [techs, setTechs] = useState(() => {
+    const saved = localStorage.getItem('techTrackerData');
+    if (saved) {
+      console.log('Данные загружены из localStorage');
+      return JSON.parse(saved);
+    }
+    return initialTechs;
+  }
+  );
 
   function setStatus(techID, statusID)
   {
@@ -50,18 +58,25 @@ function App()
     });
   }
 
+  const [filter, setFilter] = useState('all');
+
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredTechs = {
+    'all' : techs,
+    'not-started' : techs.filter((tech) => tech.statusID === 0),
+    'in-progress' : techs.filter((tech) => tech.statusID === 1),
+    'completed' : techs.filter((tech) => tech.statusID === 2),
+    'query' : techs.filter(tech =>
+      tech.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      tech.description.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  };
+
   useEffect(() => {
     localStorage.setItem('techTrackerData', JSON.stringify(techs));
     console.log('Данные сохранены в localStorage');
   }, [techs]);
-
-  useEffect(() => {
-    const saved = localStorage.getItem('techTrackerData');
-    if (saved) {
-      setTechs(JSON.parse(saved));
-      console.log('Данные загружены из localStorage');
-    }
-  }, []);
 
   const updateTechnologyNotes = (techId, newNotes) => {
     setTechs(prevTech =>
@@ -82,8 +97,27 @@ function App()
       <div className='tech-list'>
         <h2>Изучаемые технологии</h2>
         <TechFilter setFilter={setFilter} />
+        <div className="search-box">
+          <h3>Поиск технологий</h3>
+          <span>🔎</span>
+          <input
+            name='search'
+            type="text"
+            placeholder="Поиск технологий..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDownCapture={(e) => {
+              if (!e.isComposing && e.keyCode !== 229 && e.code === 'Enter')
+              {
+                setFilter('query');
+                e.target.parentElement.querySelector('.query-num').style.display = 'inline';
+              }
+            }}
+          />
+          <span className='query-num'>Найдено: {filteredTechs['query'].length}</span>
+        </div>
         <ul>
-          {techs.filter((tech) => tech.statusID >= filter[0] && tech.statusID <= filter[1]).map(tech => (
+          {filteredTechs[filter].map(tech => (
             <li key={tech.id}>
               <TechnologyCard 
                 id={tech.id}
@@ -94,7 +128,8 @@ function App()
                 notes={tech.notes}
                 onNotesChange={updateTechnologyNotes}
               />
-            </li>))}
+            </li>
+          ))}
         </ul>
       </div>
       <QuickActions 

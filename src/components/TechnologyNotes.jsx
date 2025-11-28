@@ -5,6 +5,7 @@ function TechnologyNotes({ notes, onNotesChange, techId }) {
         <div className="notes-section">
             <h4>Мои заметки:</h4>
             <textarea
+                name='notes'
                 value={notes}
                 onChange={(e) => onNotesChange(techId, e.target.value)}
                 placeholder="Записывайте сюда важные моменты..."
