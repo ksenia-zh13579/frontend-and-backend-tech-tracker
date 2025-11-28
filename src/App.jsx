@@ -72,7 +72,6 @@ function App()
       </div>
       <QuickActions 
         techs={techs}
-        setTechs={setTechs}
         setStatus={setStatus}
       />
     </div>

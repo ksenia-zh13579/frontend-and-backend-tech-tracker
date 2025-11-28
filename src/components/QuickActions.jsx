@@ -1,6 +1,6 @@
 import './QuickActions.css'
 
-function QuickActions({techs, setTechs, setStatus})
+function QuickActions({techs, setStatus})
 {
     function getRandomIntInclusive(min, max) 
     {
@@ -25,18 +25,15 @@ function QuickActions({techs, setTechs, setStatus})
         }
     }
 
-    function makeNextRandom(setTechs)
+    function makeNextRandom(techs, setStatus)
     {
-        const stid = getRandomIntInclusive(0, 2);
-        const ttl = prompt('Введите название новой технологии:');
-        const dscr = prompt('Введите описание новой технологии:');
-
-        setTechs(prevArr => [...prevArr, {
-            id : prevArr[prevArr.length - 1].id + 1, 
-            title : ttl,
-            description : dscr,
-            statusID : stid
-        }]);
+        let nonStartedTechs = techs.filter(tech => tech.statusID === 0);
+        if (nonStartedTechs.length > 0)
+        {
+            let nth = getRandomIntInclusive(0, nonStartedTechs.length - 1);
+            let id = nonStartedTechs[nth].id;
+            setStatus(id, 1);
+        }
     }
 
     return (
@@ -48,7 +45,7 @@ function QuickActions({techs, setTechs, setStatus})
             <button type='button' onClick={() => makeNonStarted(techs, setStatus)}>
                 Сбросить все статусы
             </button>
-            <button type='button' onClick={() => makeNextRandom(setTechs)}>
+            <button type='button' onClick={() => makeNextRandom(techs, setStatus)}>
                 Случайный выбор следующей технологии
             </button>
         </div>
