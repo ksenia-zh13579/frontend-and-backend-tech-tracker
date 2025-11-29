@@ -1,33 +1,27 @@
 import './TechnologyCard.css';
 import TechnologyNotes from './TechnologyNotes';
 
-function TechnologyCard({id, title, description, statusID, setStatus, notes, onNotesChange})
+function TechnologyCard({tech, onStatusChange, onNotesChange})
 {
-    const statuses = [
-        {
-            status : 'not-started', 
-            icon : '💤'}, 
-        {
-            status : 'in-progress', 
-            icon : '⏳'
-        }, 
-        {
-            status : 'completed', 
-            icon : '✅'
-        }
-    ];
+    const StatusIcons = {
+        'not-started' : '💤',
+        'in-progress' : '⏳',
+        'completed' : '✅'
+    }
+
+    const newStatus = (tech.status === 'not-started' ? 'in-progress' : (tech.status == 'in-progress' ? 'completed' : 'not-started'));
 
     return (
         <div 
-            onClick={() => {setStatus(id, (statusID + 1) % 3)}} 
-            className={"technology-card " + statuses[statusID].status}
+            onClick={() => {onStatusChange(tech.id, newStatus)}} 
+            className={"technology-card " + tech.status}
         >
             <h3 style={{flex: 1}}>
-                {title}
-                <span>{statuses[statusID].icon}</span>
+                {tech.title}
+                <span>{StatusIcons[tech.status]}</span>
             </h3>
-            <p style={{flex: 1}}>{description}</p>
-            <TechnologyNotes notes={notes} onNotesChange={onNotesChange} techId={id} />
+            <p style={{flex: 1}}>{tech.description}</p>
+            <TechnologyNotes notes={tech.notes} onNotesChange={onNotesChange} techId={tech.id} />
         </div>
     );
 }
