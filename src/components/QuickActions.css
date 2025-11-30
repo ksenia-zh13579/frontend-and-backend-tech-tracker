@@ -1,23 +1,52 @@
 .quick-actions {
+    margin: 0 10%;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.quick-actions h2 {
+    padding: 10px;
+    border-bottom: 2px solid rgba(46, 46, 243, 0.489);
+}
+
+.action-buttons {
     display: flex;
     flex-flow: column;
     justify-content: center;
     align-items: start;
     padding: 15px;
     margin: 10px 0;
-    border-radius: 10px;
-    box-shadow: 2px 2px rgba(0, 0, 0, 0.1);
 }
 
-.quick-actions button{
+.btn {
     height: 3em;
     margin: 10px;
     border-radius: 5px;
-    border: 3px solid rgb(129, 16, 243);
-    background-color: rgb(10, 76, 133);
-    color: aliceblue;
 }
 
-.quick-actions button:hover {
+.btn:hover {
     opacity: 0.8;
+    border: 3px solid rgba(0, 0, 0, 0.582);
+}
+
+.btn-success {
+    background-color: rgb(34, 188, 34);
+    color: white;
+    border: 3px solid rgb(7, 108, 46);
+}
+
+.btn-primary {
+    background-color: rgb(40, 83, 224);
+    color: white;
+    border: 3px solid rgb(39, 15, 157);
+}
+
+.btn-warning {
+    background-color: rgb(239, 226, 75);
+    border: 3px solid rgb(201, 127, 24);
+}
+
+.btn-info {
+    background-color: rgba(69, 141, 217, 0.678);
+    border: 3px solid rgb(46, 19, 185);
 }

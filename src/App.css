@@ -1,5 +1,5 @@
 /* базовые стили для приложения */
-.App {
+.app {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
@@ -9,7 +9,7 @@
 }
 
 /* стили для заголовка приложения (если используется) */
-.App-header {
+.app-header {
     background-color: #282c34;
     padding: 20px;
     color: white;
@@ -18,23 +18,22 @@
     margin-bottom: 20px;
 }
 
-.tech-list {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    margin: 20px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.app-main {
+    margin: 0 10%;
+    padding: 10px;
+    background-color: aliceblue;
 }
 
-.tech-list h2 {
+.app-main h2 {
     margin: 0 0 20px 0;
     color: #333;
 }
 
-.tech-list ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.technologies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-auto-rows: minmax(300px, auto);
+    gap: 10px;
 }
 
 .search-box {

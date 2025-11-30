@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // Кастомный хук для работы с localStorage
 function useLocalStorage(key, initialValue) {
@@ -16,22 +16,19 @@ function useLocalStorage(key, initialValue) {
         }
     });
 
-    // Функция для обновления значения в состоянии и localStorage
-    const setValue = (value) => {
-        try {
-            // Разрешаем value быть функцией, как в useState
-            const valueToStore = value instanceof Function ? value(storedValue) : value;
-
-            // Сохраняем в состояние
-            setStoredValue(valueToStore);
-
+    useEffect(() => {
+        try 
+        {
             // Сохраняем в localStorage
-            window.localStorage.setItem(key, JSON.stringify(valueToStore));
-        } catch (error) {
+            localStorage.setItem(key, JSON.stringify(storedValue));
+        }
+        catch (error) 
+        {
             console.error(`Ошибка записи в localStorage ключа "${key}":`, error);
         }
-    };
-    return [storedValue, setValue];
+    }, [key, storedValue]);
+
+    return [storedValue, setStoredValue];
 }
 
 export default useLocalStorage;

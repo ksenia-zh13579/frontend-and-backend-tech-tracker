@@ -15,7 +15,7 @@ function ProgressBar({
             {/* Заголовок с лейблом и процентом */}
             {(label || showPercentage) && (
                 <div className="progress-bar-header">
-                    {label && <span className="progress-label">{label}</span>}
+                    {label && <span className="progress-label">{label + ': '}</span>}
                     {showPercentage && (
                         <span className="progress-percentage">{normalizedProgress}%</span>
                     )}

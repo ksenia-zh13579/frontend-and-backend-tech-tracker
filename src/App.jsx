@@ -1,102 +1,85 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './App.css';
 import TechnologyCard from './components/TechnologyCard.jsx';
 import ProgressHeader from './components/ProgressHeader.jsx';
 import QuickActions from './components/QuickActions.jsx';
 import TechFilter from './components/TechFilter.jsx';
+import useTechnologies from './useTechnologies.js';
+import ProgressBar from './components/ProgressBar.jsx';
 
 function App()
 {
-  const initialTechs = [
-    {
-      id : 1, 
-      title : 'HTML', 
-      description : 'Изучить основы HTML', 
-      statusID : 2,
-      notes : ''
-    },
-    {
-      id : 2, 
-      title : 'JSX Syntax', 
-      description : 'Освоение синтаксиса JSX', 
-      statusID : 1,
-      notes : ''
-    },
-    {
-      id : 3, 
-      title : 'State Management', 
-      description : 'Работа с состоянием компонентов', 
-      statusID : 0,
-      notes : ''
-    },
-    {
-      id : 4, 
-      title : 'Effect Management', 
-      description : 'Работа с менеджером эффектов и контролируемыми полями', 
-      statusID : 0,
-      notes : ''
-    }
-  ];
-
-  const [techs, setTechs] = useState(() => {
-    const saved = localStorage.getItem('techTrackerData');
-    if (saved) {
-      console.log('Данные загружены из localStorage');
-      return JSON.parse(saved);
-    }
-    return initialTechs;
-  }
-  );
-
-  function setStatus(techID, statusID)
-  {
-    setTechs(prevArr => {
-      const techIndex = prevArr.findIndex(tech => tech.id === techID);
-      let newArr = prevArr.slice();
-      newArr.splice(techIndex, 1, {...(prevArr[techIndex]), statusID : statusID});
-      return newArr;
-    });
-  }
+  const { technologies, updateStatus, updateNotes, progress } = useTechnologies();
 
   const [filter, setFilter] = useState('all');
 
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredTechs = {
-    'all' : techs,
-    'not-started' : techs.filter((tech) => tech.statusID === 0),
-    'in-progress' : techs.filter((tech) => tech.statusID === 1),
-    'completed' : techs.filter((tech) => tech.statusID === 2),
-    'query' : techs.filter(tech =>
+    'all' : technologies,
+    'not-started' : technologies.filter((tech) => tech.status === 'not-started'),
+    'in-progress' : technologies.filter((tech) => tech.status === 'in-progress'),
+    'completed' : technologies.filter((tech) => tech.status === 'completed'),
+    'query' : technologies.filter(tech =>
       tech.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       tech.description.toLowerCase().includes(searchQuery.toLowerCase())
     )
   };
 
-  useEffect(() => {
-    localStorage.setItem('techTrackerData', JSON.stringify(techs));
-    console.log('Данные сохранены в localStorage');
-  }, [techs]);
+  const getRandomIntInclusive = (min, max) =>
+    {
+        const minCeiled = Math.ceil(min);
+        const maxFloored = Math.floor(max);
+        return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
+    }
 
-  const updateTechnologyNotes = (techId, newNotes) => {
-    setTechs(prevTech =>
-      prevTech.map(tech =>
-        tech.id === techId ? { ...tech, notes: newNotes } : tech
-      )
-    );
+  const markAllCompleted = () => {
+    for (let i = 0; i < technologies.length; ++i)
+    {
+      updateStatus(technologies[i].id, 'completed');
+    }
   }
 
+  const resetAll = () => {
+    for (let i = 0; i < technologies.length; ++i)
+      updateStatus(technologies[i].id, 'not-started');
+  }
+
+  const chooseNextRandom = () =>
+  {
+      if (filteredTechs['not-started'].length > 0)
+      {
+          let nth = getRandomIntInclusive(0, filteredTechs['not-started'].length - 1);
+          let id = filteredTechs['not-started'][nth].id;
+          updateStatus(id, 'in-progress');
+      }
+  }
+  
   return (
-    <div className='App'>
+    <div className='app'>
+      <header className="app-header">
+        <h1>Трекер изучения технологий</h1>
+        <ProgressBar
+          progress={progress}
+          label="Общий прогресс"
+          color="#4CAF50"
+          animated={true}
+          height={20}
+        />
+      </header>
+
       <ProgressHeader 
-        countAll={techs.length}
-        countNotStarted={techs.filter((tech) => tech.statusID === 0).length} 
-        countInProgress={techs.filter((tech) => tech.statusID === 1).length}
-        countCompleted={techs.filter((tech) => tech.statusID === 2).length} 
+        countAll={technologies.length}
+        countNotStarted={filteredTechs['not-started'].length} 
+        countInProgress={filteredTechs['in-progress'].length}
+        countCompleted={filteredTechs['completed'].length} 
       />
-      <div className='tech-list'>
+
+      <main className="app-main">
         <h2>Изучаемые технологии</h2>
+
         <TechFilter setFilter={setFilter} />
+
         <div className="search-box">
           <h3>Поиск технологий</h3>
           <span>🔎</span>
@@ -116,26 +99,26 @@ function App()
           />
           <span className='query-num'>Найдено: {filteredTechs['query'].length}</span>
         </div>
-        <ul>
+
+        <div className="technologies-grid">
           {filteredTechs[filter].map(tech => (
-            <li key={tech.id}>
-              <TechnologyCard 
-                id={tech.id}
-                title={tech.title} 
-                description={tech.description} 
-                statusID={tech.statusID}
-                setStatus={setStatus}
-                notes={tech.notes}
-                onNotesChange={updateTechnologyNotes}
+              <TechnologyCard
+                key={tech.id} 
+                tech={tech}
+                onStatusChange={updateStatus}
+                onNotesChange={updateNotes}
               />
-            </li>
           ))}
-        </ul>
-      </div>
-      <QuickActions 
-        techs={techs}
-        setStatus={setStatus}
-      />
+        </div>
+
+        <QuickActions 
+          technologies={technologies}
+          onMarkAllCompleted={markAllCompleted}
+          onResetAll={resetAll}
+          onChooseNextRandom={chooseNextRandom}
+        />
+
+      </main>
     </div>
   );
 }

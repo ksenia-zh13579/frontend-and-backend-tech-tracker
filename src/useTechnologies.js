@@ -1,4 +1,4 @@
-import useLocalStorage from './useLocalStorage';
+import useLocalStorage from './useLocalStorage.js';
 
 // Начальные данные для технологий
 const initialTechnologies = [
