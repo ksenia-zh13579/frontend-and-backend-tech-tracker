@@ -27,6 +27,8 @@
 .app-main h2 {
     margin: 0 0 20px 0;
     color: #333;
+    padding: 10px;
+    border-bottom: 2px solid rgba(26, 25, 25, 0.489);
 }
 
 .technologies-grid {

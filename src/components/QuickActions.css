@@ -1,12 +1,6 @@
 .quick-actions {
-    margin: 0 10%;
-    padding: 10px;
-    border-radius: 10px;
-}
-
-.quick-actions h2 {
-    padding: 10px;
-    border-bottom: 2px solid rgba(46, 46, 243, 0.489);
+    margin: 5% 0;
+    padding: 0;
 }
 
 .action-buttons {
