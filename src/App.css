@@ -18,17 +18,121 @@
     margin-bottom: 20px;
 }
 
-.app-main {
+.main-content {
     margin: 0 10%;
     padding: 10px;
     background-color: aliceblue;
 }
 
-.app-main h2 {
+.main-content h2 {
     margin: 0 0 20px 0;
     color: #333;
     padding: 10px;
     border-bottom: 2px solid rgba(26, 25, 25, 0.489);
+}
+
+.page {
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(190, 160, 220, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid #e6d5eb;
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e6d5eb;
+}
+
+.page-header h1 {
+    margin: 0 0 10px 0;
+    color: #6a4c93;
+    font-size: 1.8em;
+    font-weight: 600;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 15px;
+    color: #8e7ab5;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.back-link:hover {
+    color: #6a4c93;
+    background-color: rgba(216, 189, 224, 0.2);
+}
+
+.btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #a59bc8; /* Светло-лиловый */
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #6a4c93; /* Глубокий лиловый */
+    transform: translateY(-1px);
+}
+
+.btn-danger {
+    background-color: #cc99cc; /* Фиолетово-розовый */
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #b27fb2; /* Темнее фиолетово-розового */
+    transform: translateY(-1px);
+}
+
+/* Стили для информационного блока */
+.app-info {
+    background-color: rgba(240, 230, 245, 0.3);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #d8bde0;
+    text-align: center;
+    color: #8e7ab5;
+}
+
+.app-info h3 {
+    margin: 0 0 15px 0;
+    color: #6a4c93;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.app-info p {
+    margin: 5px 0;
+    font-size: 0.95em;
+}
+
+/* Кнопка импорта — выравнивание по центру и ширина */
+.import-btn {
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
 }
 
 .technologies-grid {

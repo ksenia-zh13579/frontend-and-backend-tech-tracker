@@ -1,4 +1,44 @@
-import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
+import Home from './pages/Home';
+import TechnologyList from './pages/TechnologyList';
+import TechnologyDetail from './pages/TechnologyDetail';
+import AddTechnology from './pages/AddTechnology';
+import Navigation from './components/Navigation';
+import useTechnologies from './useTechnologies.js';
+
+function App()
+{
+  const { technologies, updateStatus, updateNotes, progress } = useTechnologies();
+
+  return (
+    <Router>
+      <div className='app'>
+        <Navigation />
+        <main className='main-content'>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/technologies' element={<TechnologyList 
+              technologies={technologies} 
+              onStatusChange={updateStatus} 
+              onNotesChange={updateNotes}
+            />} />
+            <Route path='/add-technology' element={<AddTechnology />} />
+            <Route path='/technology/:techId' element={<TechnologyDetail 
+              technologies={technologies} 
+              onStatusChange={updateStatus} 
+              onNotesChange={updateNotes}
+            />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
+  );
+}
+
+export default App; 
+
+/* import { useState } from 'react';
 import './App.css';
 import TechnologyCard from './components/TechnologyCard.jsx';
 import ProgressHeader from './components/ProgressHeader.jsx';
@@ -123,4 +163,4 @@ function App()
   );
 }
 
-export default App;
+export default App; */

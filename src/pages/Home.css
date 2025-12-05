@@ -1,0 +1,29 @@
+.features {
+    margin-top: 20px;
+}
+
+.features h2 {
+    color: #6a4c93;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.features ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.features li {
+    background-color: rgba(216, 189, 224, 0.2);
+    margin-bottom: 10px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border-left: 4px solid #a59bc8;
+    color: #6a4c93;
+    font-size: 0.95em;
+}
+
+.features li:last-child {
+    margin-bottom: 0;
+}

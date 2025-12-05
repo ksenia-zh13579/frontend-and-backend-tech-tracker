@@ -1,5 +1,6 @@
-import './TechnologyCard.css';
+import { Link } from 'react-router-dom';
 import TechnologyNotes from './TechnologyNotes';
+import './TechnologyCard.css';
 
 function TechnologyCard({tech, onStatusChange, onNotesChange})
 {
@@ -13,7 +14,10 @@ function TechnologyCard({tech, onStatusChange, onNotesChange})
 
     return (
         <div 
-            onClick={() => {onStatusChange(tech.id, newStatus)}} 
+            onClick={(e) => {
+                if (e.target.tagName !== 'A')
+                    onStatusChange(tech.id, newStatus);
+            }} 
             className={"technology-card " + tech.status}
         >
             <h3 style={{flex: 1}}>
@@ -21,7 +25,14 @@ function TechnologyCard({tech, onStatusChange, onNotesChange})
                 <span>{StatusIcons[tech.status]}</span>
             </h3>
             <p style={{flex: 1}}>{tech.description}</p>
-            <TechnologyNotes notes={tech.notes} onNotesChange={onNotesChange} techId={tech.id} />
+            <TechnologyNotes 
+                notes={tech.notes} 
+                onNotesChange={onNotesChange} 
+                techId={tech.id}
+            />
+            <Link to={`/technology/${tech.id}`} className="btn btn-primary">
+                Подробнее →
+            </Link>
         </div>
     );
 }

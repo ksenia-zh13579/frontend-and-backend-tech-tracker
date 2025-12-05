@@ -1,33 +1,13 @@
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import TechnologyNotes from '../components/TechnologyNotes';
+import './TechnologyDetail.css'
 
-function TechnologyDetail() {
+function TechnologyDetail({technologies, onStatusChange, onNotesChange}) {
     const { techId } = useParams();
-    const navigate = useNavigate();
-    const [technology, setTechnology] = useState(null);
 
-    useEffect(() => {
-        const saved = localStorage.getItem('technologies');
-        if (saved) {
-            const technologies = JSON.parse(saved);
-            const tech = technologies.find(t => t.id === parseInt(techId));
-            setTechnology(tech);
-        }
-    }, [techId]);
-
-    const updateStatus = (newStatus) => {
-        const saved = localStorage.getItem('technologies');
-        if (saved) {
-            const technologies = JSON.parse(saved);
-            const updated = technologies.map(tech =>
-                tech.id === parseInt(techId) ? { ...tech, status: newStatus } : tech
-            );
-            localStorage.setItem('technologies', JSON.stringify(updated));
-            setTechnology({ ...technology, status: newStatus });
-        }
-    };
-
-    if (!technology) {
+    const technology = technologies.find(tech => tech.id === Number(techId));
+    
+    if (technology === undefined) {
         return (
             <div className="page">
                 <h1>Технология не найдена</h1>
@@ -47,7 +27,7 @@ function TechnologyDetail() {
                 </Link>
                 <h1>{technology.title}</h1>
             </div>
-            <div className="technology-detail">
+            <div className={`technology-detail ${technology.status}`}>
                 <div className="detail-section">
                     <h3>Описание</h3>
                     <p>{technology.description}</p>
@@ -56,19 +36,19 @@ function TechnologyDetail() {
                     <h3>Статус изучения</h3>
                     <div className="status-buttons">
                         <button
-                            onClick={() => updateStatus('not-started')}
+                            onClick={() => onStatusChange(technology.id, 'not-started')}
                             className={technology.status === 'not-started' ? 'active' : ''}
                         >
                             Не начато
                         </button>
                         <button
-                            onClick={() => updateStatus('in-progress')}
+                            onClick={() => onStatusChange(technology.id, 'in-progress')}
                             className={technology.status === 'in-progress' ? 'active' : ''}
                         >
                             В процессе
                         </button>
                         <button
-                            onClick={() => updateStatus('completed')}
+                            onClick={() => onStatusChange(technology.id, 'completed')}
                             className={technology.status === 'completed' ? 'active' : ''}
                         >
                             Завершено
@@ -77,8 +57,11 @@ function TechnologyDetail() {
                 </div>
                 {technology.notes && (
                     <div className="detail-section">
-                        <h3>Мои заметки</h3>
-                        <p>{technology.notes}</p>
+                        <TechnologyNotes
+                            notes={technology.notes}
+                            onNotesChange={onNotesChange} 
+                            techId={technology.id}
+                        />
                     </div>
                 )}
             </div>

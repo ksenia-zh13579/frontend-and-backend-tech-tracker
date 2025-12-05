@@ -1,17 +1,8 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import TechnologyCard from '../components/TechnologyCard.jsx';
+import './TechnologyList.css'
 
-function TechnologyList() {
-    const [technologies, setTechnologies] = useState([]);
-
-    // Загружаем технологии из localStorage
-    useEffect(() => {
-        const saved = localStorage.getItem('technologies');
-        if (saved) {
-            setTechnologies(JSON.parse(saved));
-        }
-    }, []);
-
+function TechnologyList({technologies, onStatusChange, onNotesChange}) {
     return (
         <div className="page">
             <div className="page-header">
@@ -20,30 +11,26 @@ function TechnologyList() {
                     + Добавить технологию
                 </Link>
             </div>
-            <div className="technologies-grid">
-                {technologies.map(tech => (
-                    <div key={tech.id} className="technology-item">
-                        <h3>{tech.title}</h3>
-                        <p>{tech.description}</p>
-                        <div className="technology-meta">
-                            <span className={`status status-${tech.status}`}>
-                                {tech.status}
-                            </span>
-                            <Link to={`/technology/${tech.id}`} className="btn-link">
-                                Подробнее →
-                            </Link>
-                        </div>
-                    </div>
-                ))}
-            </div>
-            {technologies.length === 0 && (
+            {technologies.length > 0 ? (
+                <div className="technologies-grid">
+                    {technologies.map(tech => (
+                        <TechnologyCard 
+                            key={tech.id}
+                            tech={tech} 
+                            onStatusChange={onStatusChange} 
+                            onNotesChange={onNotesChange}
+                        />
+                    ))}
+                </div>
+            ) : (
                 <div className="empty-state">
                     <p>Технологий пока нет.</p>
                     <Link to="/add-technology" className="btn btn-primary">
                         Добавить первую технологию
                     </Link>
                 </div>
-            )}
+            )
+            }
         </div>
     );
 }
