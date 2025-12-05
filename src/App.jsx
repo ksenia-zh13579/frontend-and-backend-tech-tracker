@@ -1,15 +1,23 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import './App.css';
+import useTechnologies from './useTechnologies.js';
 import Home from './pages/Home';
 import TechnologyList from './pages/TechnologyList';
 import TechnologyDetail from './pages/TechnologyDetail';
 import AddTechnology from './pages/AddTechnology';
 import Navigation from './components/Navigation';
-import useTechnologies from './useTechnologies.js';
+import Statistics from './pages/Statistics.jsx';
+import './App.css';
 
 function App()
 {
   const { technologies, updateStatus, updateNotes, progress } = useTechnologies();
+
+  const filteredTechs = {
+    'all' : technologies,
+    'not-started' : technologies.filter((tech) => tech.status === 'not-started'),
+    'in-progress' : technologies.filter((tech) => tech.status === 'in-progress'),
+    'completed' : technologies.filter((tech) => tech.status === 'completed')
+  };
 
   return (
     <Router>
@@ -17,6 +25,7 @@ function App()
         <Navigation />
         <main className='main-content'>
           <Routes>
+            <Route index element={<Home />} />
             <Route path='/' element={<Home />} />
             <Route path='/technologies' element={<TechnologyList 
               technologies={technologies} 
@@ -28,6 +37,11 @@ function App()
               technologies={technologies} 
               onStatusChange={updateStatus} 
               onNotesChange={updateNotes}
+            />} />
+            <Route path='/statistics' element={<Statistics
+              technologies={technologies}
+              filteredTechs={filteredTechs}
+              progress={progress}
             />} />
           </Routes>
         </main>

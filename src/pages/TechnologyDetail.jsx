@@ -55,15 +55,13 @@ function TechnologyDetail({technologies, onStatusChange, onNotesChange}) {
                         </button>
                     </div>
                 </div>
-                {technology.notes && (
-                    <div className="detail-section">
-                        <TechnologyNotes
-                            notes={technology.notes}
-                            onNotesChange={onNotesChange} 
-                            techId={technology.id}
-                        />
-                    </div>
-                )}
+                <div className="detail-section">
+                    <TechnologyNotes
+                        notes={technology.notes}
+                        onNotesChange={onNotesChange} 
+                        techId={technology.id}
+                    />
+                </div>
             </div>
         </div>
     );

@@ -1,0 +1,17 @@
+.statistics {
+    margin-top: 20px;
+}
+
+.statistics-section {
+    background-color: rgba(240, 230, 245, 0.3);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #d8bde0;
+}
+
+.statistics-section > h2 {
+    margin: 0 0 15px 0;
+    color: #6a4c93;
+    font-size: 1.2em;
+    font-weight: 600;
+}
