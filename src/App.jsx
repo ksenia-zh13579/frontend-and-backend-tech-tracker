@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
 import useTechnologies from './useTechnologies.js';
 import Home from './pages/Home';
 import TechnologyList from './pages/TechnologyList';
@@ -6,18 +7,27 @@ import TechnologyDetail from './pages/TechnologyDetail';
 import AddTechnology from './pages/AddTechnology';
 import Navigation from './components/Navigation';
 import Statistics from './pages/Statistics.jsx';
+import Settings from './pages/Settings.jsx';
 import './App.css';
 
 function App()
 {
   const { technologies, updateStatus, updateNotes, progress } = useTechnologies();
+  const [searchQuery, setSearchQuery] = useState('');
 
   const filteredTechs = {
     'all' : technologies,
     'not-started' : technologies.filter((tech) => tech.status === 'not-started'),
     'in-progress' : technologies.filter((tech) => tech.status === 'in-progress'),
-    'completed' : technologies.filter((tech) => tech.status === 'completed')
+    'completed' : technologies.filter((tech) => tech.status === 'completed'),
+    'query' : technologies.filter(tech =>
+      tech.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      tech.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      tech.notes.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      tech.category.toLowerCase().includes(searchQuery.toLowerCase())
+    )
   };
+
 
   return (
     <Router>
@@ -31,6 +41,9 @@ function App()
               technologies={technologies} 
               onStatusChange={updateStatus} 
               onNotesChange={updateNotes}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              filteredTechs={filteredTechs}
             />} />
             <Route path='/add-technology' element={<AddTechnology />} />
             <Route path='/technology/:techId' element={<TechnologyDetail 
@@ -42,6 +55,10 @@ function App()
               technologies={technologies}
               filteredTechs={filteredTechs}
               progress={progress}
+            />} />
+            <Route path='/settings' element={<Settings 
+              technologies={technologies}
+              onStatusChange={updateStatus}
             />} />
           </Routes>
         </main>

@@ -16,6 +16,15 @@
     margin: 10px;
     padding: 5px;
     border-radius: 10px;
+    transition: background-color 0.2s;
+    transition: all 0.3s ease;
+    cursor: pointer
+}
+
+.tech-filter label:hover {
+    opacity: 0.8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .btnAll {

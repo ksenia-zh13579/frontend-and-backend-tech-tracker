@@ -1,0 +1,12 @@
+.search-box {
+    margin: 10px;
+    padding: 10px;
+}
+
+.search-box input{
+    margin: 5px;
+}
+
+.query-num {
+    display: none;
+}

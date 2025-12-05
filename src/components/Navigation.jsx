@@ -7,7 +7,7 @@ function Navigation() {
     return (
         <nav className="main-navigation">
             <div className="nav-brand">
-                <Link to="/">
+                <Link to="/" className='nav-brand-link'>
                     <h2>🚀 Трекер технологий</h2>
                 </Link>
             </div>
@@ -16,7 +16,7 @@ function Navigation() {
                 <li>
                     <Link
                         to="/"
-                        className={location.pathname === '/' ? 'active' : ''}
+                        className={'nav-link ' + (location.pathname === '/' ? 'active' : '')}
                     >
                         Главная
                     </Link>
@@ -24,7 +24,7 @@ function Navigation() {
                 <li>
                     <Link
                         to="/technologies"
-                        className={location.pathname === '/technologies' ? 'active' : ''}
+                        className={'nav-link ' + (location.pathname === '/technologies' ? 'active' : '')}
                     >
                         Все технологии
                     </Link>
@@ -32,7 +32,7 @@ function Navigation() {
                 <li>
                     <Link
                         to="/add-technology"
-                        className={location.pathname === '/add-technology' ? 'active' : ''}
+                        className={'nav-link ' + (location.pathname === '/add-technology' ? 'active' : '')}
                     >
                         Добавить технологию
                     </Link>
@@ -40,9 +40,17 @@ function Navigation() {
                 <li>
                     <Link
                         to="/statistics"
-                        className={location.pathname === '/statistics' ? 'active' : ''}
+                        className={'nav-link ' + (location.pathname === '/statistics' ? 'active' : '')}
                     >
                         Статистика
+                    </Link>
+                </li>
+                <li>
+                    <Link
+                        to="/settings"
+                        className={'nav-link ' + (location.pathname === '/settings' ? 'active' : '')}
+                    >
+                        Настройки
                     </Link>
                 </li>
             </ul>

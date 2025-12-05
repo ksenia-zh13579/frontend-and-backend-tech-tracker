@@ -3,3 +3,7 @@
     flex-direction: column;
     gap: 16px;
 }
+
+.actions-section {
+    margin: 0;
+}

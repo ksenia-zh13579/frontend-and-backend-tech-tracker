@@ -3,7 +3,7 @@
 }
 
 .features h2 {
-    color: #6a4c93;
+    color: var(--main-color);
     text-align: center;
     margin-bottom: 15px;
 }
@@ -19,8 +19,8 @@
     margin-bottom: 10px;
     padding: 12px 15px;
     border-radius: 8px;
-    border-left: 4px solid #a59bc8;
-    color: #6a4c93;
+    border-left: 4px solid var(--secondary-color);
+    color: var(--main-color);
     font-size: 0.95em;
 }
 

@@ -27,3 +27,25 @@
     background-color: #3b6de153;
     border-left: 4px solid #2f00ff;
 }
+
+.technology-card-footer {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+}
+
+.badge {
+    display: inline-block;
+    text-align: center;
+    margin: 0;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+.badge-info {
+    background-color: #54e0d7;
+    color: white;
+}

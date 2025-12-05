@@ -1,19 +1,18 @@
 .main-navigation {
     background-color: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(10px);
-        border-bottom: 2px solid #e6d5eb;
-        padding: 10px 20px;
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid #e6d5eb;
+    padding: 10px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        margin-bottom: 24px;
-        /* ← ЭТО и есть пространство между навигацией и контентом */
+    margin-bottom: 24px;
 }
 
 .nav-brand h2 {
     margin: 0;
-    color: #6a4c93;
+    color: var(--main-color);
     font-size: 1.2em;
         font-weight: 600;
         white-space: nowrap;
@@ -32,7 +31,7 @@
 
 .nav-link {
     text-decoration: none;
-    color: #8e7ab5;
+    color: var(--secondary-color);
     padding: 8px 12px;
     border-radius: 6px;
     transition: all 0.2s ease;
@@ -46,7 +45,7 @@
 .nav-link:hover,
 .nav-link.active {
     background-color: rgba(216, 189, 224, 0.3);
-    color: #6a4c93;
+    color: var(--main-color);
 }
 
 .nav-brand-link {

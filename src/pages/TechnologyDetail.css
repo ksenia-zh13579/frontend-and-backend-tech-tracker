@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
+    border-radius: 5px;
 }
 
 .detail-section {
@@ -13,14 +14,14 @@
 
 .detail-section h3 {
     margin: 0 0 15px 0;
-    color: #6a4c93;
+    color: var(--main-color);
     font-size: 1.2em;
     font-weight: 600;
 }
 
 .detail-section p {
     margin: 0;
-    color: #8e7ab5;
+    color: var(--secondary-color);
     line-height: 1.6;
 }
 
@@ -35,7 +36,7 @@
     padding: 10px 16px;
     border: 1px solid #d8bde0;
     background-color: #f0e6f5;
-    color: #8e7ab5;
+    color: var(--secondary-color);
     border-radius: 8px;
     cursor: pointer;
     font-size: 0.95em;
@@ -46,13 +47,13 @@
 
 .status-buttons button:hover {
     background-color: #e0d0e9;
-    color: #6a4c93;
+    color: var(--main-color);
 }
 
 .status-buttons button.active {
-    background-color: #6a4c93;
+    background-color: var(--main-color);
     color: white;
-    border-color: #6a4c93;
+    border-color: var(--main-color);
 }
 
 .completed {

@@ -30,9 +30,12 @@ function TechnologyCard({tech, onStatusChange, onNotesChange})
                 onNotesChange={onNotesChange} 
                 techId={tech.id}
             />
-            <Link to={`/technology/${tech.id}`} className="btn btn-primary">
-                Подробнее →
-            </Link>
+            <div className='technology-card-footer'>
+                <Link to={`/technology/${tech.id}`} className="btn btn-primary">
+                    Подробнее →
+                </Link>
+                <span className='badge badge-info'>{tech.category}</span>
+            </div>
         </div>
     );
 }
