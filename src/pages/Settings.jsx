@@ -58,7 +58,14 @@ function Settings({technologies, onStatusChange})
             technologies: technologies
         };
         const dataStr = JSON.stringify(data, null, 2);
-        // Здесь можно добавить логику для скачивания файла
+        
+        // Логика для скачивания файла
+        const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+        const exportFileDefaultName = 'technologies-export.json';
+        const linkElement = document.createElement('a');
+        linkElement.setAttribute('href', dataUri);
+        linkElement.setAttribute('download', exportFileDefaultName);
+        linkElement.click();
         console.log('Данные для экспорта:', dataStr);
 
         setMessage({
