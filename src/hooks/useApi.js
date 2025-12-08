@@ -1,13 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 
-// Кастомный хук для работы с API
 function useApi(url, options = {}) {
-    const [data, setData] = useState(null);
+    const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     // Функция для выполнения запроса
-    const fetchData = useCallback(async (abortController) => {
+    const fetchData = useCallback(async (abortController = null) => {
         try {
             setLoading(true);
             setError(null);
@@ -22,12 +21,14 @@ function useApi(url, options = {}) {
             }
 
             const result = await response.json();
-            setData(result);
+            setData(result[0]);
+            console.log(result[0]);
 
         } catch (err) {
             // Игнорируем ошибки отмены запроса
             if (err.name !== 'AbortError') {
                 setError(err.message);
+                console.log(`Не удалось загрузить технологии: ${err.message}`);
             }
         } finally {
             setLoading(false);
@@ -45,20 +46,21 @@ function useApi(url, options = {}) {
     const addData = useCallback(async (techData) => {
         try {
             const newTech = {
-                id: Date.now(), // В реальном приложении ID генерируется на сервере
                 ...techData,
+                id: setTimeout(() => Date.now(), 100),
                 createdAt: new Date().toISOString()
             };
+            console.log(newTech);
             
-            const response = await fetch(url, {
-                method: "POST",
+            /*const response = await fetch(url, {
+                method: "PUT",
                 ...options,
                 body: JSON.stringify(newTech)
             });
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            }*/
 
             setData(prev => [...prev, newTech]);
             return newTech;
@@ -82,9 +84,43 @@ function useApi(url, options = {}) {
         return () => {
             abortController.abort();
         };
-    }, [url, fetchData]); // fetchData стабильна благодаря useCallback
+    }, [url]);
 
-    return { data, loading, error, refetch, addData };
+    // Функция для обновления статуса технологии
+    const updateStatus = useCallback((techId, newStatus) => {
+        setData(prev =>
+            prev.map(tech =>
+                tech.id === techId ? { ...tech, status: newStatus } : tech
+            )
+        );
+    }, []);
+
+    // Функция для обновления заметок
+    const updateNotes = useCallback((techId, newNotes) => {
+        setData(prev =>
+            prev.map(tech =>
+                tech.id === techId ? { ...tech, notes: newNotes } : tech
+            )
+        );
+    }, []);
+
+    // Функция для расчета общего прогресса
+    const calculateProgress = () => {
+        if (data.length === 0) return 0;
+        const completed = data.filter(tech => tech.status ===
+        'completed').length;
+        return Math.round((completed / data.length) * 100);
+    };
+
+    return { 
+        data, 
+        updateStatus, 
+        updateNotes, 
+        progress: calculateProgress(), 
+        loading, 
+        error, 
+        refetch, 
+        addData };
 }
 
 export default useApi;
