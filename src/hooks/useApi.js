@@ -21,8 +21,8 @@ function useApi(url, options = {}) {
             }
 
             const result = await response.json();
-            setData(result[0]);
-            console.log(result[0]);
+            setData(result);
+            console.log(result);
 
         } catch (err) {
             // Игнорируем ошибки отмены запроса
@@ -48,19 +48,22 @@ function useApi(url, options = {}) {
             const newTech = {
                 ...techData,
                 id: setTimeout(() => Date.now(), 100),
-                createdAt: new Date().toISOString()
             };
             console.log(newTech);
             
-            /*const response = await fetch(url, {
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("X-Master-Key", "$2a$10$FAr4j8Ltb.FeZkv8je8/uuAujPUdGHEwt4QypejDa2nsOaAkiDpGS");
+
+            const response = await fetch(url, {
                 method: "PUT",
-                ...options,
-                body: JSON.stringify(newTech)
+                headers : myHeaders,
+                body: JSON.stringify([...data, newTech])
             });
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
-            }*/
+            }
 
             setData(prev => [...prev, newTech]);
             return newTech;
@@ -69,7 +72,7 @@ function useApi(url, options = {}) {
             setError(`Не удалось добавить технологию: ${err.message}`);
             console.log(`Не удалось добавить технологию: ${err.message}`);
         }
-    }, [url, options]);
+    }, [url, data]);
 
     // Выполняем запрос при изменении URL
     useEffect(() => {

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import TechnologyCard from '../components/TechnologyCard.jsx';
 import TechFilter from '../components/TechFilter.jsx';
 import SearchBox from '../components/SearchBox.jsx';
+import SearchTechnologies from '../components/SearchTechnologies.jsx';
 import './TechnologyList.css'
 
 function TechnologyList({technologies, onStatusChange, onNotesChange, searchQuery, setSearchQuery, filteredTechs})
@@ -48,6 +49,7 @@ function TechnologyList({technologies, onStatusChange, onNotesChange, searchQuer
                 </div>
             )
             }
+            <SearchTechnologies />
         </div>
     );
 }
