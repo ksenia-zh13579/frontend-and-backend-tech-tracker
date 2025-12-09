@@ -14,8 +14,19 @@ import './App.css';
 
 function App()
 {
-  const { technologies, updateStatus, updateNotes, progress, loading, error, refetch, addData: addTechnology } = useTechnologiesApi();
   //const { technologies, updateStatus, updateNotes, progress } = useTechnologies();
+  const BIN_ID = '6938263243b1c97be9e2023f';
+  const MASTER_KEY = '$2a$10$FAr4j8Ltb.FeZkv8je8/uuAujPUdGHEwt4QypejDa2nsOaAkiDpGS';
+
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("X-Master-Key", MASTER_KEY);
+  myHeaders.append("X-Bin-Meta", "false");
+
+  const { technologies, updateStatus, updateNotes, progress, loading, error, refetch, addTechnology } = useTechnologiesApi(
+      `https://api.jsonbin.io/v3/b/${BIN_ID}`, 
+      { headers: myHeaders }
+  );
   
   const [searchQuery, setSearchQuery] = useState('');
 

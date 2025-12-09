@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 
 function SearchTechnologies() {
-    const BIN_ID = '693586e343b1c97be9dda5f9';
+    const BIN_ID = '6938263243b1c97be9e2023f';
     const MASTER_KEY = '$2a$10$FAr4j8Ltb.FeZkv8je8/uuAujPUdGHEwt4QypejDa2nsOaAkiDpGS';
 
     const [technologies, setTechnologies] = useState([]);
@@ -98,7 +98,7 @@ function SearchTechnologies() {
 
     return (
         <div className="techs-search">
-            <h2>Поиск технологий</h2>
+            <h2>Поиск технологий в API</h2>
             
             <div className="search-box">
                 <input

@@ -1,17 +1,19 @@
 import { useState } from 'react';
 
 function RoadmapImporter({error, addTechnology}) {
+    const IMPORT_BIN_ID = '69360358ae596e708f8a2255';
+    const MASTER_KEY = '$2a$10$FAr4j8Ltb.FeZkv8je8/uuAujPUdGHEwt4QypejDa2nsOaAkiDpGS';
+
     const [importing, setImporting] = useState(false);
 
     const handleImportRoadmap = async (roadmapUrl) => {
         try {
             setImporting(true);
             
-            // Имитация загрузки дорожной карты из API
             const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
-            myHeaders.append("X-Master-Key", "$2a$10$FAr4j8Ltb.FeZkv8je8/uuAujPUdGHEwt4QypejDa2nsOaAkiDpGS");
-            //myHeaders.append("X-JSON-Path", "$.technologies");
+            myHeaders.append("X-Master-Key", MASTER_KEY);
+            myHeaders.append("X-Bin-Meta", "false");
             const response = await fetch(roadmapUrl, { headers: myHeaders });
 
             if (!response.ok) 
@@ -21,11 +23,11 @@ function RoadmapImporter({error, addTechnology}) {
             console.log(roadmapData);
             
             // Добавляем каждую технологию из дорожной карты
-            for (const tech of roadmapData.technologies) {
+            for (const tech of roadmapData) {
                 await addTechnology(tech);
             }
             
-            alert(`Успешно импортировано ${roadmapData.technologies.length} технологий`);
+            alert(`Успешно импортировано ${roadmapData.length} технологий`);
             
         } catch (err) {
             alert(`Ошибка импорта: ${err.message}`);
@@ -36,7 +38,7 @@ function RoadmapImporter({error, addTechnology}) {
 
     const handleExampleImport = () => {
         // Пример импорта из фиктивного API
-        handleImportRoadmap('https://api.jsonbin.io/v3/b/69360358ae596e708f8a2255?meta=false');
+        handleImportRoadmap(`https://api.jsonbin.io/v3/b/${IMPORT_BIN_ID}`);
     };
 
     return (
