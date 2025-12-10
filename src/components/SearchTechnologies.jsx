@@ -100,10 +100,10 @@ function SearchTechnologies() {
         <div className="techs-search">
             <h2>Поиск технологий в API</h2>
             
-            <div className="search-box">
+            <div className="search-box-api">
                 <input
                 type="text"
-                placeholder="Введите название технологии..."
+                placeholder="Введите текст..."
                 value={searchTerm}
                 onChange={handleSearchChange}
                 className="search-input"

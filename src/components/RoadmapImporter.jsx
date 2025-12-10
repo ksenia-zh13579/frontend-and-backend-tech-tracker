@@ -50,15 +50,15 @@ function RoadmapImporter({error, addTechnology}) {
                     <button 
                     onClick={handleExampleImport}
                     disabled={importing}
-                    className="import-button"
+                    className="import-btn btn btn-info"
                     >
-                    {importing ? 'Импорт...' : 'Импорт пример дорожной карты'}
+                        {importing ? 'Импорт...' : 'Импорт пример дорожной карты'}
                     </button>
                 </div>
 
                 {error && (
                     <div className="error-message">
-                    {error}
+                        {error}
                     </div>
                 )}
             </div>

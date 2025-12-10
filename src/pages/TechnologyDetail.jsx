@@ -1,8 +1,9 @@
 import { useParams, Link } from 'react-router-dom';
 import TechnologyNotes from '../components/TechnologyNotes';
+import TechnologyResources from '../components/TechnologyResources';
 import './TechnologyDetail.css'
 
-function TechnologyDetail({technologies, onStatusChange, onNotesChange}) {
+function TechnologyDetail({technologies, onStatusChange, onNotesChange, onAddResource}) {
     const { techId } = useParams();
 
     const technology = technologies.find(tech => tech.id === Number(techId));
@@ -33,6 +34,14 @@ function TechnologyDetail({technologies, onStatusChange, onNotesChange}) {
                     <p>{technology.description}</p>
                 </div>
                 <div className="detail-section">
+                    <h3>Категория</h3>
+                    <p>{technology.category}</p>
+                </div>
+                <div className="detail-section">
+                    <h3>Уровень</h3>
+                    <p>{technology.difficulty}</p>
+                </div>
+                <div className="detail-section">
                     <h3>Статус изучения</h3>
                     <div className="status-buttons">
                         <button
@@ -60,6 +69,12 @@ function TechnologyDetail({technologies, onStatusChange, onNotesChange}) {
                         notes={technology.notes}
                         onNotesChange={onNotesChange} 
                         techId={technology.id}
+                    />
+                </div>
+                <div className="detail-section">
+                    <TechnologyResources 
+                        technology={technology}
+                        onAddResource={onAddResource}
                     />
                 </div>
             </div>

@@ -1,0 +1,25 @@
+.add-resource-section {
+    border: 2px solid var(--border-color);
+    padding: 10px;
+    display: flex;
+    flex-flow: column;
+    gap: 5px;
+}
+
+.invisible {
+    display: none;
+}
+
+.add-resource-section label, input, p {
+    margin: 5px;
+}
+
+.add-resource-section .error-message {
+    display: none;
+    color: red;
+    margin: 5px;
+}
+
+.add-resource-section .error {
+    border: 2px solid red;
+}

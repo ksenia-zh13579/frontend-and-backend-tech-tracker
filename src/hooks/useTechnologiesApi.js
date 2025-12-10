@@ -109,6 +109,14 @@ function useApi(url, options = {}) {
         );
     }, []);
 
+    const addResource = useCallback((techId, newResource) => {
+        setTechnologies(prev =>
+            prev.map(tech =>
+                tech.id === techId ? { ...tech, resources: [...tech.resources, newResource] } : tech
+            )
+        );
+    }, []);
+
     // Функция для расчета общего прогресса
     const calculateProgress = () => {
         if (technologies.length === 0) return 0;
@@ -125,7 +133,9 @@ function useApi(url, options = {}) {
         loading, 
         error, 
         refetch, 
-        addTechnology };
+        addTechnology,
+        addResource
+    };
 }
 
 export default useApi;
