@@ -3,12 +3,10 @@ import { useState, useEffect } from 'react';
 //import useTechnologies from './hooks/useTechnologies';
 import useTechnologiesApi from './hooks/useTechnologiesApi';
 import Navigation from './components/Navigation';
-import RoadmapImporter from './components/RoadmapImporter';
 import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import TechnologyList from './pages/TechnologyList';
 import TechnologyDetail from './pages/TechnologyDetail';
-import AddTechnology from './pages/AddTechnology';
 import Statistics from './pages/Statistics';
 import Settings from './pages/Settings';
 import Login from './pages/Login';
@@ -58,7 +56,7 @@ function App()
     error, 
     refetch, 
     addTechnology, 
-    addResource 
+    editTechnology
   } = useTechnologiesApi(
       `https://api.jsonbin.io/v3/b/${BIN_ID}`, 
       { headers: myHeaders }
@@ -77,6 +75,36 @@ function App()
       tech.notes.toLowerCase().includes(searchQuery.toLowerCase()) ||
       tech.category.toLowerCase().includes(searchQuery.toLowerCase())
     )
+  };
+
+  const [showForm, setShowForm] = useState(false);
+  const [editingTech, setEditingTech] = useState(null);
+
+    // Обработчик сохранения технологии
+  const handleSaveTechnology = (techData) => {
+      if (editingTech) {
+          // Редактирование существующей технологии
+          editTechnology(editingTech, techData);
+      } else {
+          // Добавление новой технологии
+          addTechnology(techData);
+      }
+      
+      // Закрываем форму после сохранения
+      setShowForm(false);
+      setEditingTech(null);
+  };
+
+  // Обработчик редактирования
+  const handleEdit = (technology) => {
+      setEditingTech(technology);
+      setShowForm(true);
+  };
+
+  // Обработчик отмены
+  const handleCancel = () => {
+      setShowForm(false);
+      setEditingTech(null);
   };
 
   if (loading) {
@@ -133,20 +161,24 @@ function App()
                   searchQuery={searchQuery}
                   setSearchQuery={setSearchQuery}
                   filteredTechs={filteredTechs}
+                  showForm={showForm}
+                  setShowForm={setShowForm}
+                  editingTech={editingTech}
+                  onSaveTechnology={handleSaveTechnology}
+                  onCancel={handleCancel}
                 />
               </ProtectedRoute>} />
-            <Route path='/add-technology' element={
-              <ProtectedRoute isLoggedIn={isLoggedIn}>
-                <AddTechnology />
-              </ProtectedRoute>
-            } />
             <Route path='/technology/:techId' element={
               <ProtectedRoute isLoggedIn={isLoggedIn}>
                 <TechnologyDetail 
                   technologies={technologies} 
                   onStatusChange={updateStatus} 
                   onNotesChange={updateNotes}
-                  onAddResource={addResource}
+                  showForm={showForm}
+                  editingTech={editingTech}
+                  onSaveTechnology={handleSaveTechnology}
+                  onEdit={handleEdit}
+                  onCancel={handleCancel}
                 />
               </ProtectedRoute>
             } />
@@ -175,61 +207,3 @@ function App()
 }
 
 export default App;
-
-/*import { useState } from 'react';
-import useTechnologiesApi from './hooks/useTechnologiesApi';
-import RoadmapImporter from './components/RoadmapImporter';
-import TechnologyList from './pages/TechnologyList';
-
-function App() {
-  const { technologies, updateStatus, updateNotes, progress, loading, error, refetch, addData } = useTechnologiesApi();
-
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const filteredTechs = {
-    'all' : technologies,
-    'not-started' : technologies.filter((tech) => tech.status === 'not-started'),
-    'in-progress' : technologies.filter((tech) => tech.status === 'in-progress'),
-    'completed' : technologies.filter((tech) => tech.status === 'completed'),
-    'query' : technologies.filter(tech =>
-      tech.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      tech.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      tech.notes.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      tech.category.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-  };
-
-  if (loading) {
-    return (
-      <div className="app-loading">
-        <div className="spinner"></div>
-        <p>Загрузка технологий...</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="app">
-      <header className="app-header">
-        <h1>🚀 Трекер изучения технологий</h1>
-        <button onClick={refetch} className="refresh-btn">
-          Обновить
-        </button>
-      </header>
-
-      {error && (
-        <div className="app-error">
-          <p>{error}</p>
-          <button onClick={refetch}>Попробовать снова</button>
-        </div>
-      )}
-
-      <main className="app-main">
-        <RoadmapImporter />
-        
-      </main>
-    </div>
-  );
-}
-
-export default App; */

@@ -14,8 +14,8 @@
     margin: 0;
     color: var(--main-color);
     font-size: 1.2em;
-        font-weight: 600;
-        white-space: nowrap;
+    font-weight: 600;
+    white-space: nowrap;
 }
 
 .nav-menu {
@@ -24,9 +24,13 @@
     margin: 0;
     padding: 0;
     gap: 16px;
-        flex-wrap: wrap;
-        /* Позволяет меню переноситься на новую строку */
-        justify-content: center;
+    flex-wrap: wrap;
+    /* Позволяет меню переноситься на новую строку */
+    justify-content: center;
+}
+
+.nav-menu li {
+    vertical-align: center;
 }
 
 .nav-link {
@@ -36,10 +40,10 @@
     border-radius: 6px;
     transition: all 0.2s ease;
     font-weight: 500;
-        white-space: nowrap;
-        /* Не переносим по умолчанию */
-        min-width: max-content;
-        /* Минимальная ширина по содержимому */
+    white-space: nowrap;
+    /* Не переносим по умолчанию */
+    min-width: max-content;
+    /* Минимальная ширина по содержимому */
 }
 
 .nav-link:hover,
@@ -64,7 +68,9 @@
 }
 
 .user-info {
-    border: 2px solid var(--border-color);
+    color: var(--secondary-color);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
 }
 
 /* Адаптивность: на маленьких экранах делаем текст меньше и разрешаем перенос */

@@ -3,7 +3,7 @@ import './TechnologyNotes.css'
 function TechnologyNotes({ notes, onNotesChange, techId }) {
     return (
         <div className="notes-section">
-            <h4>Мои заметки:</h4>
+            <h3>Мои заметки:</h3>
             <textarea
                 name='notes'
                 value={notes}

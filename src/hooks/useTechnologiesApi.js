@@ -50,6 +50,8 @@ function useApi(url, options = {}) {
             const newTech = {
                 ...techData,
                 id: Date.now(),
+                status: 'not-started',
+                notes: ''
             };
             console.log(newTech);
             
@@ -109,10 +111,20 @@ function useApi(url, options = {}) {
         );
     }, []);
 
-    const addResource = useCallback((techId, newResource) => {
+    /* const addResource = useCallback((techId, newResource) => {
         setTechnologies(prev =>
             prev.map(tech =>
                 tech.id === techId ? { ...tech, resources: [...tech.resources, newResource] } : tech
+            )
+        );
+    }, []); */
+
+    const editTechnology = useCallback((editingTech, newTechData) => {
+        setTechnologies(prev => 
+            prev.map(tech => 
+                tech.id === editingTech.id 
+                    ? { ...tech, ...newTechData, updatedAt: new Date().toISOString() }
+                    : tech
             )
         );
     }, []);
@@ -134,7 +146,7 @@ function useApi(url, options = {}) {
         error, 
         refetch, 
         addTechnology,
-        addResource
+        editTechnology
     };
 }
 

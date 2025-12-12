@@ -1,9 +1,9 @@
 import { useParams, Link } from 'react-router-dom';
 import TechnologyNotes from '../components/TechnologyNotes';
-import TechnologyResources from '../components/TechnologyResources';
+import AddEditTechnology from '../components/AddEditTechnology';
 import './TechnologyDetail.css'
 
-function TechnologyDetail({technologies, onStatusChange, onNotesChange, onAddResource}) {
+function TechnologyDetail({technologies, onStatusChange, onNotesChange, showForm, editingTech, onSaveTechnology, onEdit, onCancel}) {
     const { techId } = useParams();
 
     const technology = technologies.find(tech => tech.id === Number(techId));
@@ -72,11 +72,37 @@ function TechnologyDetail({technologies, onStatusChange, onNotesChange, onAddRes
                     />
                 </div>
                 <div className="detail-section">
-                    <TechnologyResources 
-                        technology={technology}
-                        onAddResource={onAddResource}
-                    />
+                    <h3>Ресурсы</h3>
+                    <ul className="tech-resources">
+                        {technology.resources.map(resource =>
+                        <li key={resource.length}>
+                            <a href={resource} className='tech-resource'>{resource}</a>
+                        </li> 
+                        )}
+                    </ul>
                 </div>
+                <div className="detail-section">
+                    <button 
+                        onClick={() => onEdit(technology)}
+                        className='btn btn-info '
+                    >
+                        Редактировать
+                    </button>
+                </div>
+
+                {/* Форма добавления/редактирования */}
+                {showForm && (
+                    <div className="form-modal">
+                        <div className="modal-window">
+                            <AddEditTechnology
+                                onSave={onSaveTechnology}
+                                onCancel={onCancel}
+                                initialData={editingTech || {}}
+                            />
+                        </div>
+                    </div>
+                )}
+
             </div>
         </div>
     );
