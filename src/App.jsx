@@ -1,19 +1,45 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 //import useTechnologies from './hooks/useTechnologies';
 import useTechnologiesApi from './hooks/useTechnologiesApi';
 import Navigation from './components/Navigation';
 import RoadmapImporter from './components/RoadmapImporter';
+import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import TechnologyList from './pages/TechnologyList';
 import TechnologyDetail from './pages/TechnologyDetail';
 import AddTechnology from './pages/AddTechnology';
 import Statistics from './pages/Statistics';
 import Settings from './pages/Settings';
+import Login from './pages/Login';
 import './App.css';
 
 function App()
 {
+  // Состояние для отслеживания авторизации
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
+
+  // Проверяем авторизацию при загрузке и при изменении
+  useEffect(() => {
+    const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const user = localStorage.getItem('username') || '';
+    setIsLoggedIn(loggedIn);
+    setUsername(user);
+  }, []);
+
+  const handleLogin = (user) => {
+    setIsLoggedIn(true);
+    setUsername(user);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('username');
+    setIsLoggedIn(false);
+    setUsername('');
+  };
+
   //const { technologies, updateStatus, updateNotes, progress } = useTechnologies();
   const BIN_ID = '6938263243b1c97be9e2023f';
   const MASTER_KEY = '$2a$10$FAr4j8Ltb.FeZkv8je8/uuAujPUdGHEwt4QypejDa2nsOaAkiDpGS';
@@ -65,12 +91,18 @@ function App()
   return (
     <Router>
       <div className='app'>
-        <Navigation />
+        <Navigation isLoggedIn={isLoggedIn} username={username} handleLogout={handleLogout} />
         <header className="app-header">
           <h1>🚀 Трекер изучения технологий</h1>
-          <button onClick={refetch} className="retry-button">
-            Обновить
-          </button>
+          {isLoggedIn ? 
+            (
+              <button onClick={refetch} className="retry-button">
+                Обновить
+              </button>
+            ) : (
+              <></>
+            )
+          }
         </header>
 
         {error && (
@@ -81,37 +113,60 @@ function App()
         )}
         
         <main className='main-content'>
-          <RoadmapImporter
-            error={error}
-            addTechnology={addTechnology}
-          />
+          
           <Routes>
-            <Route index element={<Home />} />
-            <Route path='/' element={<Home />} />
-            <Route path='/technologies' element={<TechnologyList 
-              technologies={technologies} 
-              onStatusChange={updateStatus} 
-              onNotesChange={updateNotes}
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-              filteredTechs={filteredTechs}
-            />} />
-            <Route path='/add-technology' element={<AddTechnology />} />
-            <Route path='/technology/:techId' element={<TechnologyDetail 
-              technologies={technologies} 
-              onStatusChange={updateStatus} 
-              onNotesChange={updateNotes}
-              onAddResource={addResource}
-            />} />
-            <Route path='/statistics' element={<Statistics
-              technologies={technologies}
-              filteredTechs={filteredTechs}
-              progress={progress}
-            />} />
-            <Route path='/settings' element={<Settings 
-              technologies={technologies}
-              onStatusChange={updateStatus}
-            />} />
+            <Route path='/' element={
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <Home error={error} addTechnology={addTechnology} />
+              </ProtectedRoute>
+            } />
+            <Route 
+              path="/login" 
+              element={<Login onLogin={handleLogin} />} 
+            />
+            <Route path='/technologies' element={
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <TechnologyList 
+                  technologies={technologies} 
+                  onStatusChange={updateStatus} 
+                  onNotesChange={updateNotes}
+                  searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                  filteredTechs={filteredTechs}
+                />
+              </ProtectedRoute>} />
+            <Route path='/add-technology' element={
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <AddTechnology />
+              </ProtectedRoute>
+            } />
+            <Route path='/technology/:techId' element={
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <TechnologyDetail 
+                  technologies={technologies} 
+                  onStatusChange={updateStatus} 
+                  onNotesChange={updateNotes}
+                  onAddResource={addResource}
+                />
+              </ProtectedRoute>
+            } />
+            <Route path='/statistics' element={
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <Statistics
+                  technologies={technologies}
+                  filteredTechs={filteredTechs}
+                  progress={progress}
+                />
+              </ProtectedRoute>
+            } />
+            <Route path='/settings' element={
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <Settings 
+                  technologies={technologies}
+                  onStatusChange={updateStatus}
+                />
+              </ProtectedRoute>
+            } />
           </Routes>
         </main>
       </div>

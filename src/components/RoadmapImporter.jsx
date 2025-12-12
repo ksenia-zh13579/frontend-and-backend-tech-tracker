@@ -42,26 +42,24 @@ function RoadmapImporter({error, addTechnology}) {
     };
 
     return (
-        <div className='page'>
-            <div className="roadmap-importer">
-                <h3>Импорт дорожной карты</h3>
-                
-                <div className="import-actions">
-                    <button 
-                    onClick={handleExampleImport}
-                    disabled={importing}
-                    className="import-btn btn btn-info"
-                    >
-                        {importing ? 'Импорт...' : 'Импорт пример дорожной карты'}
-                    </button>
-                </div>
-
-                {error && (
-                    <div className="error-message">
-                        {error}
-                    </div>
-                )}
+        <div className="roadmap-importer">
+            <h3>Импорт дорожной карты</h3>
+            
+            <div className="import-actions">
+                <button 
+                onClick={handleExampleImport}
+                disabled={importing}
+                className="import-btn btn btn-info"
+                >
+                    {importing ? 'Импорт...' : 'Импорт пример дорожной карты'}
+                </button>
             </div>
+
+            {error && (
+                <div className="error-message">
+                    {error}
+                </div>
+            )}
         </div>
     );
 }

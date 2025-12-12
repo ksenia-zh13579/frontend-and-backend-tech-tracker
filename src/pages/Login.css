@@ -1,0 +1,13 @@
+.login-form {
+    display: flex;
+    flex-flow: column;
+    gap: 16px;
+    justify-content: center;
+}
+
+.form-group {
+    display: flex;
+    flex-flow: column;
+    gap: 16px;
+    justify-content: center;
+}

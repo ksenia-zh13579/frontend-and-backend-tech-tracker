@@ -1,6 +1,7 @@
+import RoadmapImporter from '../components/RoadmapImporter';
 import './Home.css'
 
-function Home() {
+function Home({error, addTechnology}) {
     return (
         <div className="page">
             <div className="page-header">
@@ -15,6 +16,10 @@ function Home() {
                     <li>Быстрая работа без перезагрузки</li>
                 </ul>
             </div>
+            <RoadmapImporter
+                error={error}
+                addTechnology={addTechnology}
+            />
         </div>
     );
 }
