@@ -3,8 +3,8 @@
     --main-color : #35079a;
     --secondary-color : #1f26bac3;
     --primary-color : #4317e2;
-    --info-color : #54e0d7;
-    --success-color : #6cf071;
+    --info-color : #19cec2;
+    --success-color : #31d236;
     --warning-color : #fffd7c;
     --danger-color : #ea15159d;
     --border-color : #e6d5eb;
@@ -50,6 +50,7 @@
     box-shadow: 0 4px 8px rgba(190, 160, 220, 0.2);
     backdrop-filter: blur(10px);
     border: 2px solid var(--border-color);
+    scroll-behavior: smooth;
 }
 
 .page-header {
@@ -101,17 +102,17 @@
     color: white;
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
     background-color: #37047e;
     transform: translateY(-1px);
 }
 
 .btn-info {
-    background-color: #54e0d7;
+    background-color: var(--info-color);
     color: white;
 }
 
-.btn-info:hover {
+.btn-info:hover:not(:disabled) {
     background-color: #16a094;
     transform: translateY(-1px);
 }
@@ -121,7 +122,7 @@
     color: white;
 }
 
-.btn-success:hover {
+.btn-success:hover:not(:disabled) {
     background-color: #19a93b;
     transform: translateY(-1px);
 }
@@ -131,7 +132,7 @@
     color: black;
 }
 
-.btn-warning:hover {
+.btn-warning:hover:not(:disabled) {
     background-color: #e8e400;
     transform: translateY(-1px);
 }
@@ -141,9 +142,13 @@
     color: white;
 }
 
-.btn-danger:hover {
+.btn-danger:hover:not(:disabled) {
     background-color: #cc0c0c;
     transform: translateY(-1px);
+}
+
+button:disabled {
+    opacity: 0.5;
 }
 
 /* Стили для информационного блока */
@@ -245,9 +250,11 @@
     max-height: 80vh;
     overflow-y: auto;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    scroll-margin-block-start: 5px;
+    scroll-margin-block-end: 5px;
 }
 
-.modal-header {
+.form-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -255,7 +262,7 @@
     border-bottom: 1px solid #e0e0e0;
 }
 
-.modal-header h2 {
+.form-header h2 {
     margin: 0;
     font-size: 1.3rem;
     color: #333;
@@ -275,6 +282,78 @@
     color: #333;
 }
 
-.modal-content {
+.form-content {
     padding: 20px;
+}
+
+.ref-add-redact {
+    text-decoration: none;
+    color: inherit;
+}
+
+.form-group {
+    margin: 10px 0;
+    padding: 10px;
+    display: flex;
+    flex-flow: column;
+    gap: 10px;
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+}
+
+.form-group label, input, textarea, select {
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
+.form-actions {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    margin: 10px;
+    padding: 15px;
+}
+
+.form-validation-info {
+    color: rgb(167, 6, 6);
+    font-weight: bold;
+    margin: 10px;
+    padding: 15px;
+    border: 2px dashed red;
+}
+
+.required::after {
+    content: '*';
+    font-weight: bold;
+    color: red;
+    margin: 5px;
+}
+
+.error {
+    border: 2px solid red;
+}
+
+.error-message {
+    display: block;
+    color: rgb(167, 6, 6);
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+.success-message {
+    color: var(--success-color);
+    font-weight: bold;
+    margin: 0px;
+    padding: 10px;
+    border-top: 1px dashed var(--border-color);
 }

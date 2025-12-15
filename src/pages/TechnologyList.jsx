@@ -1,23 +1,41 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TechnologyCard from '../components/TechnologyCard.jsx';
 import TechFilter from '../components/TechFilter.jsx';
 import SearchBox from '../components/SearchBox.jsx';
 import SearchTechnologies from '../components/SearchTechnologies.jsx';
 import AddEditTechnology from '../components/AddEditTechnology.jsx';
+import EditStatuses from '../components/EditStatuses.jsx';
 import './TechnologyList.css'
 
-function TechnologyList({ technologies, onStatusChange, onNotesChange, searchQuery, setSearchQuery, filteredTechs, showForm, setShowForm, editingTech, onSaveTechnology, onCancel }) 
+function TechnologyList({ technologies, onStatusChange, onNotesChange, searchQuery, setSearchQuery, filteredTechs, showForm, editingTech, onSaveTechnology, onCancel, handleShowForm }) 
 {
     const [filter, setFilter] = useState('all');
+    const [showEditStatuses, setShowEditStatuses] = useState(false);
+
+    useEffect(() => {
+        if (showEditStatuses) {
+            document.querySelector('.edit-statuses-form').focus({ focusVisible: true, preventScroll: false });
+        }
+        else {
+            let btnEditStatuses = document.getElementById('btnEditStatuses');
+            if (btnEditStatuses)
+                btnEditStatuses.focus({ focusVisible: true, preventScroll: false });
+        }
+    }, [showEditStatuses]);
+
+    const handleCancelEditStatuses = () => {
+        setShowEditStatuses(false);
+    }
 
     return (
         <div className="page">
             <div className="page-header">
                 <h1>Все технологии</h1>
                 <button 
-                    onClick={() => setShowForm(true)}
+                    onClick={handleShowForm}
                     className="btn btn-primary"
+                    id='btnAddEditTechnology'
                 >
                     + Добавить технологию
                 </button>
@@ -32,6 +50,21 @@ function TechnologyList({ technologies, onStatusChange, onNotesChange, searchQue
                             filteredTechs={filteredTechs}
                         />
                         <TechFilter setFilter={setFilter}/>
+                        <button 
+                            onClick={() => setShowEditStatuses(true)} 
+                            className='btn btn-info'
+                            id='btnEditStatuses'
+                        >
+                            Изменить статусы
+                        </button>
+                        {showEditStatuses && 
+                            <EditStatuses 
+                                technologies={technologies}
+                                onStatusChange={onStatusChange}
+                                onCancel={handleCancelEditStatuses}
+                            />
+                        }
+
                     </div>
                     <div className="technologies-grid">
                         {filteredTechs[filter].map(tech => (
@@ -48,8 +81,9 @@ function TechnologyList({ technologies, onStatusChange, onNotesChange, searchQue
                 <div className="empty-state">
                     <p>Технологий пока нет.</p>
                     <button 
-                        onClick={() => setShowForm(true)}
+                        onClick={handleShowForm}
                         className="btn btn-primary"
+                        id='btnAddEditTechnology'
                     >
                         + Добавить технологию
                     </button>
@@ -57,7 +91,7 @@ function TechnologyList({ technologies, onStatusChange, onNotesChange, searchQue
             
             {/* Форма добавления/редактирования */}
             {showForm && (
-                <div className="form-modal">
+                <div className="form-modal" aria-modal="true">
                     <div className="modal-window">
                         <AddEditTechnology
                             onSave={onSaveTechnology}

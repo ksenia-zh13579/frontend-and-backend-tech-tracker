@@ -16,6 +16,10 @@ function AddEditTechnology({ onSave, onCancel, initialData = {} }) {
     const [errors, setErrors] = useState({});
     const [isFormValid, setIsFormValid] = useState(false);
 
+    // состояние отправки
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitSuccess, setSubmitSuccess] = useState(false);
+
     // Валидация формы
     const validateForm = () => {
         const newErrors = {};
@@ -42,7 +46,10 @@ function AddEditTechnology({ onSave, onCancel, initialData = {} }) {
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             
-            if (deadlineDate < today) {
+            if (!deadlineDate) {
+                newErrors.deadline = 'Дедлайн обязателен для заполнения';
+            }
+            else if (deadlineDate < today) {
                 newErrors.deadline = 'Дедлайн не может быть в прошлом';
             }
         }
@@ -112,10 +119,16 @@ function AddEditTechnology({ onSave, onCancel, initialData = {} }) {
     };
 
     // Обработчик отправки формы
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         
         if (isFormValid) {
+            setIsSubmitting(true);
+            // имитация отправки на сервер
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            setIsSubmitting(false);
+
+            setSubmitSuccess(true);
             // Очищаем пустые ресурсы перед сохранением
             const cleanedData = {
                 ...formData,
@@ -123,12 +136,18 @@ function AddEditTechnology({ onSave, onCancel, initialData = {} }) {
             };
             
             onSave(cleanedData);
+
+            // скрытие сообщения об успехе через 3 секунды
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            setSubmitSuccess(false);
+
+            onCancel();
         }
     };
 
     return (
         <form onSubmit={handleSubmit} className="technology-form" noValidate>
-            <div className="modal-header">
+            <div className="form-header">
                 <h2>
                     {initialData.title ? 'Редактирование технологии' : 'Добавление новой технологии'}
                 </h2>
@@ -137,7 +156,7 @@ function AddEditTechnology({ onSave, onCancel, initialData = {} }) {
                 </button>
             </div>
 
-            <div className="modal-content">
+            <div className="form-content">
                 {/* Поле названия */}
                 <div className="form-group">
                     <label htmlFor="title" className="required">
@@ -151,6 +170,8 @@ function AddEditTechnology({ onSave, onCancel, initialData = {} }) {
                         onChange={handleChange}
                         className={errors.title ? 'error' : ''}
                         placeholder="Например: React, Node.js, TypeScript"
+                        aria-required="true"
+                        aria-invalid={!!errors.title}
                         aria-describedby={errors.title ? 'title-error' : undefined}
                         required
                     />
@@ -230,6 +251,9 @@ function AddEditTechnology({ onSave, onCancel, initialData = {} }) {
                         onChange={handleChange}
                         className={errors.deadline ? 'error' : ''}
                         aria-describedby={errors.deadline ? 'deadline-error' : undefined}
+                        aria-required="true"
+                        aria-invalid={!!errors.deadline}
+                        required
                     />
                     {errors.deadline && (
                         <span id="deadline-error" className="error-message" role="alert">
@@ -250,6 +274,7 @@ function AddEditTechnology({ onSave, onCancel, initialData = {} }) {
                                 placeholder="https://example.com"
                                 className={errors[`resource_${index}`] ? 'error' : ''}
                                 aria-describedby={errors[`resource_${index}`] ? `resource-${index}-error` : undefined}
+                                aria-invalid={!!errors[`resource_${index}`]}
                             />
                             {formData.resources.length > 1 && (
                                 <button
@@ -305,6 +330,24 @@ function AddEditTechnology({ onSave, onCancel, initialData = {} }) {
             {!isFormValid && (
                 <div className="form-validation-info" role="status">
                     ⚠️ Заполните все обязательные поля корректно
+                </div>
+            )}
+
+            {/* область для скринридера - объявляет статус отправки */}
+            <div
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+                className="sr-only"
+            >
+                {isSubmitting && 'Отправка формы...'}
+                {submitSuccess && 'Форма успешно отправлена!'}
+            </div>
+            
+            {/* визуальное сообщение об успехе */}
+            {submitSuccess && (
+                <div className="success-message" role="alert">
+                    {initialData.title ? 'Технология успешно отредактирована!' : 'Технология успешно добавлена!'}
                 </div>
             )}
         </form>

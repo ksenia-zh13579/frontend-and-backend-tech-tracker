@@ -91,8 +91,8 @@ function App()
       }
       
       // Закрываем форму после сохранения
-      setShowForm(false);
-      setEditingTech(null);
+      //setShowForm(false);
+      //setEditingTech(null);
   };
 
   // Обработчик редактирования
@@ -106,6 +106,17 @@ function App()
       setShowForm(false);
       setEditingTech(null);
   };
+
+  useEffect(() => {
+    if (showForm) {
+      document.querySelector('.modal-window').focus({ focusVisible: true, preventScroll: false });
+    }
+    else {
+      let btnAddEditTechnology = document.querySelector('btnAddEditTechnology');
+      if (btnAddEditTechnology)
+        btnAddEditTechnology.focus({ focusVisible: true, preventScroll: false });
+    }
+  }, [showForm]);
 
   if (loading) {
     return (
@@ -162,10 +173,10 @@ function App()
                   setSearchQuery={setSearchQuery}
                   filteredTechs={filteredTechs}
                   showForm={showForm}
-                  setShowForm={setShowForm}
                   editingTech={editingTech}
                   onSaveTechnology={handleSaveTechnology}
                   onCancel={handleCancel}
+                  handleShowForm={() => setShowForm(true)}
                 />
               </ProtectedRoute>} />
             <Route path='/technology/:techId' element={

@@ -3,7 +3,7 @@ import TechnologyNotes from '../components/TechnologyNotes';
 import AddEditTechnology from '../components/AddEditTechnology';
 import './TechnologyDetail.css'
 
-function TechnologyDetail({technologies, onStatusChange, onNotesChange, showForm, editingTech, onSaveTechnology, onEdit, onCancel}) {
+function TechnologyDetail({technologies, onStatusChange, onNotesChange, showForm, editingTech, onSaveTechnology, onEdit, onCancel }) {
     const { techId } = useParams();
 
     const technology = technologies.find(tech => tech.id === Number(techId));
@@ -84,7 +84,8 @@ function TechnologyDetail({technologies, onStatusChange, onNotesChange, showForm
                 <div className="detail-section">
                     <button 
                         onClick={() => onEdit(technology)}
-                        className='btn btn-info '
+                        className='btn btn-info'
+                        id='btnAddEditTechnology'
                     >
                         Редактировать
                     </button>
@@ -92,7 +93,7 @@ function TechnologyDetail({technologies, onStatusChange, onNotesChange, showForm
 
                 {/* Форма добавления/редактирования */}
                 {showForm && (
-                    <div className="form-modal">
+                    <div className="form-modal" aria-modal="true">
                         <div className="modal-window">
                             <AddEditTechnology
                                 onSave={onSaveTechnology}
