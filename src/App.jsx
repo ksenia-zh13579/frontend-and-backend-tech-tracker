@@ -82,17 +82,13 @@ function App()
 
     // Обработчик сохранения технологии
   const handleSaveTechnology = (techData) => {
-      if (editingTech) {
-          // Редактирование существующей технологии
-          editTechnology(editingTech, techData);
-      } else {
-          // Добавление новой технологии
-          addTechnology(techData);
-      }
-      
-      // Закрываем форму после сохранения
-      //setShowForm(false);
-      //setEditingTech(null);
+    if (editingTech) {
+        // Редактирование существующей технологии
+        editTechnology(editingTech, techData);
+    } else {
+        // Добавление новой технологии
+        addTechnology(techData);
+    }
   };
 
   // Обработчик редактирования
@@ -207,6 +203,7 @@ function App()
                 <Settings 
                   technologies={technologies}
                   onStatusChange={updateStatus}
+                  addTechnology={addTechnology}
                 />
               </ProtectedRoute>
             } />

@@ -17,6 +17,16 @@
     font-weight: 600;
 }
 
-.actions button {
+.actions .btn {
     margin: 15px;
+}
+
+.drop-zone {
+    margin: 10px;
+    padding: 20px;
+    border: 3px dashed grey;
+}
+
+.drop-zone .dragging {
+    opacity: 0.6;
 }

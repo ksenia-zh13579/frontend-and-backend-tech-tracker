@@ -2,13 +2,15 @@ import { useState } from 'react';
 import Modal from '../components/Modal';
 import './Settings.css';
 
-function Settings({technologies, onStatusChange})
+function Settings({technologies, onStatusChange, addTechnology})
 {
     const [showExportModal, setShowExportModal] = useState(false);
     const [message, setMessage] = useState({
         title : '',
         body : ''
     });
+
+    const [isDragging, setIsDragging] = useState(false);
 
     const getRandomIntInclusive = (min, max) =>
     {
@@ -53,26 +55,105 @@ function Settings({technologies, onStatusChange})
     }
 
     const handleExport = () => {
-        const data = {
-            exportedAt: new Date().toISOString(),
-            technologies: technologies
-        };
-        const dataStr = JSON.stringify(data, null, 2);
+        const dataStr = JSON.stringify(technologies, null, 2);
         
         // Логика для скачивания файла
-        const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
-        const exportFileDefaultName = 'technologies-export.json';
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const exportFileDefaultName = `tech-tracker-${new Date().toISOString().split('T')[0]}.json`;
         const linkElement = document.createElement('a');
-        linkElement.setAttribute('href', dataUri);
+        linkElement.setAttribute('href', url);
         linkElement.setAttribute('download', exportFileDefaultName);
         linkElement.click();
+        URL.revokeObjectURL(url);
         console.log('Данные для экспорта:', dataStr);
 
         setMessage({
             title : 'Экспорт данных',
-            body : 'Данные успешно подготовлены для экспорта! Проверьте консоль разработчика для просмотра данных.'
+            body : `Экспортировано ${technologies.length} технологий! Проверьте консоль разработчика для просмотра данных.`
         });
         setShowExportModal(true);
+    };
+
+    const handleImport = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+
+        reader.onload = async (e) => {
+            try {
+                const imported = JSON.parse(e.target.result);
+                console.log(imported);
+
+                if (!Array.isArray(imported))
+                    throw new Error('Неверный формат данных!');
+
+                for (const tech of imported)
+                {
+                    await addTechnology(tech);
+                }
+
+                setMessage({
+                    title : 'Импорт данных',
+                    body : `Импортировано ${technologies.length} технологий!`
+                });
+            } catch(error) {
+                setMessage({
+                    title : 'Импорт данных',
+                    body : `Ошибка импорта: неверный формат файла: ${error}!`
+                });
+            }
+        };
+
+        reader.readAsText(file);
+        e.target.value = '';
+        setShowExportModal(true);
+    };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        setIsDragging(true);
+    }
+
+    const handleDragLeave = () => {
+        setIsDragging(false);
+    }
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        setIsDragging(false);
+
+        const file = e.dataTransfer.files[0];
+
+        if (file && file.type === 'application/json')
+        {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const imported = JSON.parse(e.target.result);
+
+                    if (!Array.isArray(imported))
+                        throw new Error('Неверный формат данных!');
+
+                    for (const tech of imported)
+                        addTechnology(tech);
+
+                    setMessage({
+                        title : 'Импорт данных',
+                        body : `Импортировано ${technologies.length} технологий!`
+                    });
+                } catch(error) {
+                    setMessage({
+                        title : 'Импорт данных',
+                        body : `Ошибка импорта: неверный формат файла: ${error}!`
+                    });
+                }
+            };
+
+            reader.readAsText(file);
+            setShowExportModal(true);
+        }
     };
 
     return (
@@ -92,8 +173,25 @@ function Settings({technologies, onStatusChange})
                     ❓Случайный выбор следующей технологии
                 </button>
                 <button type='button' onClick={handleExport} className="btn btn-primary">
-                    📤 Экспорт данных
+                    📤 Экспорт данных в JSON-файл
                 </button>
+                <label className='btn btn-primary file-input-label'>
+                    📥 Импорт данных из JSON-файла
+                    <input 
+                        type='file'
+                        accept='.json'
+                        onChange={handleImport}
+                        style={{display : 'none'}}
+                    />
+                </label>
+                <div
+                    className={`drop-zone ${isDragging ? 'dragging' : ''}`}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                >
+                    Перетащите JSON-файл сюда
+                </div>
             </div>
 
             <Modal
